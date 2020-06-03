@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Rubiks {
@@ -12,14 +14,8 @@ public class Rubiks {
 	static final int F = 4;
 	static final int Fprim = 5;
 
+	static final int[] reverseMoves = new int[] { Rprim, R, Uprim, U, Fprim, F };
 	static final String moves[] = new String[] { "R", "R'", "U", "U'", "F", "F'" };
-
-	static final int Yellow = 0;
-	static final int Red = 1;
-	static final int Green = 2;
-	static final int Blue = 3;
-	static final int White = 4;
-	static final int Orange = 5;
 
 	static int cube[] = new int[25];
 	static int cubeNew[] = new int[25];
@@ -66,6 +62,15 @@ public class Rubiks {
 		return true;
 	}
 
+	static boolean isTopOriented(int[] cube) {
+		return cube[1] == cube[2] && cube[3] == cube[2] && cube[4] == cube[3];
+	}
+
+	static boolean isLayerOneSolved(int[] cube) {
+		return cube[7] == cube[8] && cube[9] == cube[10] && cube[10] == cube[11] && cube[11] == cube[12]
+				&& cube[15] == cube[16] && cube[19] == cube[20] && cube[23] == cube[24];
+	}
+
 	static void rotate(int side) {
 		for (int i = 1; i < cube.length; i++) {
 			cube[i] = cubeNew[i];
@@ -90,7 +95,6 @@ public class Rubiks {
 			rotateFprim();
 			break;
 		}
-
 	}
 
 	static void rotateU() {
@@ -191,7 +195,57 @@ public class Rubiks {
 		return s;
 	}
 
+	static void execAlg(int[] alg) {
+		for (int move : alg) {
+			rotate(move);
+		}
+	}
+
+	static Map<String, Integer> dp = new HashMap<>();
+
+	// ogbyyrggwwwwybbbyrrrgooo
+	static void solve(String algo, int numberOfMoves, int prevMove) {
+		if (numberOfMoves >= 12) {
+			return;
+		}
+
+		if (checkSolved(cubeNew)) {
+			solves.add(algo);
+			return;
+		}
+		String cubeState = Arrays.toString(cubeNew);
+		Integer movesToState = dp.get(cubeState);
+
+		if (movesToState == null || movesToState > numberOfMoves) {
+			dp.put(cubeState, numberOfMoves);
+		} else if (movesToState <= numberOfMoves) {
+			return;
+		}
+
+		for (int move = 0; move < 6; move++) {
+			if (reverseMoves[move] == prevMove) {
+				continue;
+			}
+			rotate(move);
+			solve(algo + moves[move], numberOfMoves + 1, move);
+			rotate(reverseMoves[move]);
+		}
+	}
+
 	static List<String> solves = new ArrayList<>();
+
+	static String shortestSolve() {
+		int minLen = 20;
+		String min = "";
+		// System.out.println(solves);
+		for (int i = 0; i < solves.size(); i++) {
+			if (solves.get(i).length() < minLen) {
+				minLen = solves.get(i).length();
+				min = solves.get(i);
+			}
+		}
+		return min;
+	}
 
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
@@ -205,64 +259,12 @@ public class Rubiks {
 
 		String scramble = in.next();
 		int[] cubeInitialState = convertScrambleToCubeArray(scramble);
-
-		// yyyyrrrrwwwwoooobbbbgggg
-		// yryrrwrwwowoyoyobbbbgggg
-		// gbyyrgggwwbwryborbyrowoo
-
-		int[] algo = new int[10];
+		cubeNew = Arrays.copyOf(cubeInitialState, cubeNew.length);
 
 		long tic = System.currentTimeMillis();
-		for (int i = 0; i < 6; i++) {
-			for (int j = 0; j < 6; j++) {
-				for (int k = 0; k < 6; k++) {
-					for (int ii = 0; ii < 6; ii++) {
-						for (int jj = 0; jj < 6; jj++) {
-							for (int kk = 0; kk < 6; kk++) {
-								for (int iii = 0; iii < 6; iii++) {
-									for (int jjj = 0; jjj < 6; jjj++) {
-										for (int kkk = 0; kkk < 6; kkk++) {
-											for (int iiii = 0; iiii < 6; iiii++) {
-												for (int idx = 1; idx < cubeInitialState.length; idx++) {
-													cubeNew[idx] = cubeInitialState[idx];
-												}
-												algo[0] = i;
-												algo[1] = j;
-												algo[2] = k;
-												algo[3] = ii;
-												algo[4] = jj;
-												algo[5] = kk;
-												algo[6] = iii;
-												algo[7] = jjj;
-												algo[8] = kkk;
-												algo[9] = iiii;
-												for (int p = 0; p < algo.length; p++) {
-													rotate(algo[p]);
-													if (checkSolved(cubeNew)) {
-														solves.add(algoToString(Arrays.copyOf(algo, p + 1)));
-														break;
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		System.out.println(System.currentTimeMillis() - tic);
-		int minLen = 20;
-		String min = "";
-		// System.out.println(solves);
-		for (int i = 0; i < solves.size(); i++) {
-			if (solves.get(i).length() < minLen) {
-				minLen = solves.get(i).length();
-				min = solves.get(i);
-			}
-		}
-		System.out.println(min);
+		solve("", 0, 7);
+		System.out.printf("Time taken to find shorest solution, %fs\n%s",
+				(System.currentTimeMillis() - tic) / 1000f, shortestSolve());
+
 	}
 }
