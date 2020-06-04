@@ -3,8 +3,8 @@ A solver for the 2x2 rubiks cube alddo know as pocket cube. Uses <del>a recursiv
 BFS. 
 Usage:  
 ```
-javac Rubiks.java  
-java Rubiks
+javac *.java  
+java Solver
 ```
 
 Enter a 24 character string which represents the color of the cube stickers according to the diagram  
