@@ -22,4 +22,4 @@ Shortest solution:
 [R, U, U, R, F', U', R, U', F, U', F, U]
 Time taken to solve: 17.166000s
 ```
-![alt text](cubeDiagram.png)
+![alt text](cube_diagram.png)
