@@ -82,8 +82,8 @@ public class Solver {
 
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-		System.out.println("Enter cube scramble:\n ");
-		System.out.println("y-yell" + "");
+		System.out.println("Enter 24 character string of sticker colors according to cube_diagram.png\n");
+		System.out.println("y-yellow");
 		System.out.println("r-red");
 		System.out.println("g-green");
 		System.out.println("b-blue");
