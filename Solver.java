@@ -5,8 +5,8 @@ public class Solver {
 	static final String moves[] = new String[] { "R", "R'", "U", "U'", "F", "F'" };
 	static List<String> optimalSolution;
 
-	static int[] convertScrambleToCubeArray(String scramble) {
-		int[] cube = new int[25];
+	static byte[] convertScrambleToStickerArray(String scramble) {
+		byte[] cube = new byte[25];
 		for (int i = 1; i < cube.length; i++) {
 			switch (scramble.charAt(i - 1)) {
 			case 'y':
@@ -33,7 +33,7 @@ public class Solver {
 		return cube;
 	}
 
-	static boolean checkSolved(int[] cube) {
+	static boolean checkSolved(byte[] cube) {
 		int color = 0;
 		for (int i = 1; i < cube.length; i++) {
 			if (i % 4 == 1) {
@@ -56,6 +56,8 @@ public class Solver {
 		Collections.reverse(steps);
 		return steps;
 	}
+
+	static int cnt = 0;
 
 	static List<String> solveBFS(CubeState cubeState) {
 		Map<CubeState, CubeState> prev = new HashMap<>();
@@ -81,7 +83,7 @@ public class Solver {
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		System.out.println("Enter cube scramble:\n ");
-		System.out.println("y-yellow");
+		System.out.println("y-yell" + "");
 		System.out.println("r-red");
 		System.out.println("g-green");
 		System.out.println("b-blue");
@@ -89,7 +91,7 @@ public class Solver {
 		System.out.println("o-orange");
 
 		String scramble = in.next();
-		int[] cube = convertScrambleToCubeArray(scramble);
+		byte[] cube = convertScrambleToStickerArray(scramble);
 
 		long tic = System.currentTimeMillis();
 		CubeState init = new CubeState(cube, 0);

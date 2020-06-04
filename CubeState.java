@@ -11,9 +11,9 @@ class CubeState {
 	static final int Fprim = 5;
 
 	int lastMove;
-	int[] stickers;
+	byte[] stickers;
 
-	CubeState(int[] arr, int move) {
+	CubeState(byte[] arr, int move) {
 		this.stickers = arr;
 		this.lastMove = move;
 	}
@@ -21,125 +21,125 @@ class CubeState {
 	List<CubeState> neighbours() {
 		List<CubeState> neigh = new ArrayList<>();
 		for (int move = 0; move < 6; move++) {
-			int[] stateArr = rotate(move, stickers);
-			neigh.add(new CubeState(stateArr, move));
+			byte[] stickersRot = rotate(move, stickers);
+			neigh.add(new CubeState(stickersRot, move));
 		}
 		return neigh;
 	}
 
-	static int[] rotate(int side, int[] cube) {
-		int cubeNew[] = Arrays.copyOf(cube, cube.length);
-		switch (side) {
+	static byte[] rotate(int move, byte[] stickers) {
+		byte[] stickersRot = Arrays.copyOf(stickers, stickers.length);
+		switch (move) {
 		case U:
-			rotateU(cubeNew, cube);
+			rotateU(stickersRot, stickers);
 			break;
 		case Uprim:
-			rotateUprim(cubeNew, cube);
+			rotateUprim(stickersRot, stickers);
 			break;
 		case R:
-			rotateR(cubeNew, cube);
+			rotateR(stickersRot, stickers);
 			break;
 		case Rprim:
-			rotateRprim(cubeNew, cube);
+			rotateRprim(stickersRot, stickers);
 			break;
 		case F:
-			rotateF(cubeNew, cube);
+			rotateF(stickersRot, stickers);
 			break;
 		case Fprim:
-			rotateFprim(cubeNew, cube);
+			rotateFprim(stickersRot, stickers);
 			break;
 		}
-		return cubeNew;
+		return stickersRot;
 	}
 
-	static void rotateU(int[] cubeNew, int[] cube) {
-		cubeNew[5] = cube[21];
-		cubeNew[6] = cube[22];
-		cubeNew[1] = cube[3];
-		cubeNew[2] = cube[1];
-		cubeNew[3] = cube[4];
-		cubeNew[21] = cube[13];
-		cubeNew[22] = cube[14];
-		cubeNew[13] = cube[17];
-		cubeNew[14] = cube[18];
-		cubeNew[17] = cube[5];
-		cubeNew[18] = cube[6];
-		cubeNew[4] = cube[2];
+	static void rotateU(byte[] stickersRot, byte[] stickers) {
+		stickersRot[5] = stickers[21];
+		stickersRot[6] = stickers[22];
+		stickersRot[1] = stickers[3];
+		stickersRot[2] = stickers[1];
+		stickersRot[3] = stickers[4];
+		stickersRot[21] = stickers[13];
+		stickersRot[22] = stickers[14];
+		stickersRot[13] = stickers[17];
+		stickersRot[14] = stickers[18];
+		stickersRot[17] = stickers[5];
+		stickersRot[18] = stickers[6];
+		stickersRot[4] = stickers[2];
 	}
 
-	static void rotateUprim(int[] cubeNew, int[] cube) {
-		cubeNew[1] = cube[2];
-		cubeNew[2] = cube[4];
-		cubeNew[4] = cube[3];
-		cubeNew[3] = cube[1];
-		cubeNew[5] = cube[17];
-		cubeNew[6] = cube[18];
-		cubeNew[21] = cube[5];
-		cubeNew[22] = cube[6];
-		cubeNew[13] = cube[21];
-		cubeNew[14] = cube[22];
-		cubeNew[17] = cube[13];
-		cubeNew[18] = cube[14];
+	static void rotateUprim(byte[] stickersRot, byte[] stickers) {
+		stickersRot[1] = stickers[2];
+		stickersRot[2] = stickers[4];
+		stickersRot[4] = stickers[3];
+		stickersRot[3] = stickers[1];
+		stickersRot[5] = stickers[17];
+		stickersRot[6] = stickers[18];
+		stickersRot[21] = stickers[5];
+		stickersRot[22] = stickers[6];
+		stickersRot[13] = stickers[21];
+		stickersRot[14] = stickers[22];
+		stickersRot[17] = stickers[13];
+		stickersRot[18] = stickers[14];
 	}
 
-	static void rotateR(int[] cubeNew, int[] cube) {
-		cubeNew[2] = cube[6];
-		cubeNew[4] = cube[8];
-		cubeNew[21] = cube[23];
-		cubeNew[22] = cube[21];
-		cubeNew[23] = cube[24];
-		cubeNew[24] = cube[22];
-		cubeNew[6] = cube[10];
-		cubeNew[8] = cube[12];
-		cubeNew[10] = cube[15];
-		cubeNew[12] = cube[13];
-		cubeNew[13] = cube[4];
-		cubeNew[15] = cube[2];
+	static void rotateR(byte[] stickersRot, byte[] stickers) {
+		stickersRot[2] = stickers[6];
+		stickersRot[4] = stickers[8];
+		stickersRot[21] = stickers[23];
+		stickersRot[22] = stickers[21];
+		stickersRot[23] = stickers[24];
+		stickersRot[24] = stickers[22];
+		stickersRot[6] = stickers[10];
+		stickersRot[8] = stickers[12];
+		stickersRot[10] = stickers[15];
+		stickersRot[12] = stickers[13];
+		stickersRot[13] = stickers[4];
+		stickersRot[15] = stickers[2];
 	}
 
-	static void rotateRprim(int[] cubeNew, int[] cube) {
-		cubeNew[2] = cube[15];
-		cubeNew[4] = cube[13];
-		cubeNew[6] = cube[2];
-		cubeNew[8] = cube[4];
-		cubeNew[10] = cube[6];
-		cubeNew[12] = cube[8];
-		cubeNew[15] = cube[10];
-		cubeNew[13] = cube[12];
-		cubeNew[24] = cube[23];
-		cubeNew[23] = cube[21];
-		cubeNew[21] = cube[22];
-		cubeNew[22] = cube[24];
+	static void rotateRprim(byte[] stickersRot, byte[] stickers) {
+		stickersRot[2] = stickers[15];
+		stickersRot[4] = stickers[13];
+		stickersRot[6] = stickers[2];
+		stickersRot[8] = stickers[4];
+		stickersRot[10] = stickers[6];
+		stickersRot[12] = stickers[8];
+		stickersRot[15] = stickers[10];
+		stickersRot[13] = stickers[12];
+		stickersRot[24] = stickers[23];
+		stickersRot[23] = stickers[21];
+		stickersRot[21] = stickers[22];
+		stickersRot[22] = stickers[24];
 	}
 
-	static void rotateF(int[] cubeNew, int[] cube) {
-		cubeNew[3] = cube[20];
-		cubeNew[4] = cube[18];
-		cubeNew[21] = cube[3];
-		cubeNew[23] = cube[4];
-		cubeNew[18] = cube[9];
-		cubeNew[20] = cube[10];
-		cubeNew[10] = cube[21];
-		cubeNew[9] = cube[23];
-		cubeNew[6] = cube[5];
-		cubeNew[5] = cube[7];
-		cubeNew[7] = cube[8];
-		cubeNew[8] = cube[6];
+	static void rotateF(byte[] stickersRot, byte[] stickers) {
+		stickersRot[3] = stickers[20];
+		stickersRot[4] = stickers[18];
+		stickersRot[21] = stickers[3];
+		stickersRot[23] = stickers[4];
+		stickersRot[18] = stickers[9];
+		stickersRot[20] = stickers[10];
+		stickersRot[10] = stickers[21];
+		stickersRot[9] = stickers[23];
+		stickersRot[6] = stickers[5];
+		stickersRot[5] = stickers[7];
+		stickersRot[7] = stickers[8];
+		stickersRot[8] = stickers[6];
 	}
 
-	static void rotateFprim(int[] cubeNew, int[] cube) {
-		cubeNew[20] = cube[3];
-		cubeNew[18] = cube[4];
-		cubeNew[3] = cube[21];
-		cubeNew[4] = cube[23];
-		cubeNew[9] = cube[18];
-		cubeNew[10] = cube[20];
-		cubeNew[21] = cube[10];
-		cubeNew[23] = cube[9];
-		cubeNew[5] = cube[6];
-		cubeNew[7] = cube[5];
-		cubeNew[8] = cube[7];
-		cubeNew[6] = cube[8];
+	static void rotateFprim(byte[] stickersRot, byte[] stickers) {
+		stickersRot[20] = stickers[3];
+		stickersRot[18] = stickers[4];
+		stickersRot[3] = stickers[21];
+		stickersRot[4] = stickers[23];
+		stickersRot[9] = stickers[18];
+		stickersRot[10] = stickers[20];
+		stickersRot[21] = stickers[10];
+		stickersRot[23] = stickers[9];
+		stickersRot[5] = stickers[6];
+		stickersRot[7] = stickers[5];
+		stickersRot[8] = stickers[7];
+		stickersRot[6] = stickers[8];
 	}
 
 	@Override
@@ -148,8 +148,8 @@ class CubeState {
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		CubeState cubeState = (CubeState) o;
-		return Arrays.equals(stickers, cubeState.stickers);
+		CubeState stickersState = (CubeState) o;
+		return Arrays.equals(stickers, stickersState.stickers);
 	}
 
 	@Override
