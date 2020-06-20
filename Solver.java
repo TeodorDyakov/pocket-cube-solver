@@ -56,8 +56,6 @@ public class Solver {
 		return steps;
 	}
 
-	static int cnt = 0;
-
 	static List<String> solveBFS(CubeState cubeState) {
 		Map<CubeState, CubeState> prev = new HashMap<>();
 		Queue<CubeState> q = new ArrayDeque<>();
