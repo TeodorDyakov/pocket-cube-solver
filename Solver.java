@@ -3,7 +3,6 @@ import java.util.*;
 public class Solver {
 
 	static final String moves[] = new String[] { "R", "R'", "U", "U'", "F", "F'" };
-	static List<String> optimalSolution;
 
 	static byte[] convertScrambleToStickerArray(String scramble) {
 		byte[] cube = new byte[25];
